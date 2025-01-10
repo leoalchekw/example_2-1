@@ -97,19 +97,20 @@ void alarmDeactivationUpdate()
 
 void uartTask()
 {
-    char receivedChar = '\0';
-    if( uartUsb.readable() ) {
-        uartUsb.read( &receivedChar, 1 );
-        if ( receivedChar == '1') {
-            if ( alarmState ) {
-                uartUsb.write( "The alarm is activated\r\n", 24);
+	char receivedChar = '\0';
+	if( uartUsb.readable() ) {
+		uartUsb.read( &receivedChar, 1 );
+
+		if ( receivedChar == '1') {
+			availableCommands();
+		} else if ( receivedChar == '2' ){
+		    if (alarmState) {
+				uartUsb.write(“Alarm activated\r\n”, 17);
             } else {
-                uartUsb.write( "The alarm is not activated\r\n", 28);
+	            uartUsb.write(“Alarm not activated\r\n”, 21);
             }
-        } else {
-            availableCommands();
         }
-    }
+	}
 }
 
 void availableCommands()
